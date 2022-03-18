@@ -1,12 +1,12 @@
 # DRL models from ElegantRL: https://github.com/AI4Finance-Foundation/ElegantRL
 import torch
-from elegantrl.agents.agent import AgentDDPG
-from elegantrl.agents.agent import AgentPPO
-from elegantrl.agents.agent import AgentSAC
-from elegantrl.agents.agent import AgentTD3
-from elegantrl.train.config import Arguments
-# from elegantrl.agents.agent import AgentA2C
-from elegantrl.train.run import train_and_evaluate, init_agent
+from elegantrl.agent import AgentDDPG
+from elegantrl.agent import AgentPPO
+from elegantrl.agent import AgentSAC
+from elegantrl.agent import AgentTD3
+from elegantrl.config import Arguments
+# from elegantrl.agent import AgentA2C
+from elegantrl.run import train_and_evaluate, init_agent
 
 MODELS = {"ddpg": AgentDDPG, "td3": AgentTD3, "sac": AgentSAC, "ppo": AgentPPO}
 OFF_POLICY_MODELS = ["ddpg", "td3", "sac"]
@@ -36,11 +36,12 @@ class DRLAgent:
             make a prediction in a test dataset and get results
     """
 
-    def __init__(self, env, price_array, tech_array, turbulence_array):
+    def __init__(self, env, price_array, tech_array, turbulence_array, df ):
         self.env = env
         self.price_array = price_array
         self.tech_array = tech_array
         self.turbulence_array = turbulence_array
+        self.df = df
 
     def get_model(self, model_name, model_kwargs):
         env_config = {
@@ -48,6 +49,7 @@ class DRLAgent:
             "tech_array": self.tech_array,
             "turbulence_array": self.turbulence_array,
             "if_train": True,
+            "df": self.df
         }
         env = self.env(config=env_config)
         env.env_num = 1

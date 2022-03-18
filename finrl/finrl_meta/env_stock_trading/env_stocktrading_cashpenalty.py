@@ -48,7 +48,6 @@ class StockTradingEnvCashpenalty(gym.Env):
 
     def __init__(
         self,
-        df,
         buy_cost_pct=3e-3,
         sell_cost_pct=3e-3,
         date_col_name="date",
@@ -64,6 +63,7 @@ class StockTradingEnvCashpenalty(gym.Env):
         random_start=True,
         patient=False,
         currency="$",
+        config = None
     ):
         self.df = df
         self.stock_col = "tic"
